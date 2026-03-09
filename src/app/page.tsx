@@ -1,66 +1,102 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client'
 
-export default function Home() {
+import "./page.css";
+import { useEffect, useState } from "react";
+import Cocktail from "./components/cocktailCard";
+import { searchCocktailByName } from "./lib/api/cocktailByName";
+import { Cocktailito } from "./type";
+import { getRandomCocktail } from "./lib/api/randomCocktail";
+import RandomPanel from "./components/randomPanel";
+
+const Home = () => {
+  const [cocktails, setCocktails] = useState<Cocktailito[]>([]);
+  const [cocktail, setCocktail] = useState<Cocktailito | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [search, setSearch] = useState<string>("");
+  const [inputName, setName] = useState<string>("");
+
+  useEffect(() => {
+    if (!search) {
+      setCocktails([]);
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    searchCocktailByName(search)
+      .then((e) => {
+        setCocktails(e.data.drinks ?? []);
+      })
+      .catch((err) => {
+        setError(err.message);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [search]);
+
+   const randomCocktail =()=>{
+    setLoading(true);
+    setError(null);
+    setCocktails([]);
+
+    getRandomCocktail().then((e)=>setCocktail(e)).catch((err)=>{
+      setError(err.message);
+
+    }).finally(()=>{
+        setLoading(false);
+    });
+  };
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main className="container">
+      <h1 className="main-title">
+        Lista de Cocktails
+      </h1>
+
+      <div className="search-container">
+  <input
+    className="search-input"
+    value={inputName}
+    onChange={(e) => setName(e.target.value)}
+  />
+  <button
+    className="search-button"
+    onClick={() => setSearch(inputName)}
+  >
+    Buscar
+  </button>
+
+  <button className="botonRandom"
+    onClick={()=>randomCocktail()}>Dime algo bonito</button>
+
+  
+</div>
+
+      {error && <p>El error es: {error}</p>}
+      {loading && <p>Cargando...</p>}
+
+      <div className="grid">
+        {cocktails.map((cocktail) => (
+          <Cocktail
+            key={cocktail.idDrink}
+            cocktail={cocktail}
+          />
+        ))}
+      </div>
+
+      {cocktail && cocktails.length === 0  && (
+        <div className="random cocktail">
+          
+            <RandomPanel key={cocktail.idDrink} cocktailrandom={cocktail} />
+          
         </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+      )}
+
+    </main>
   );
-}
+};
+
+export default Home;

@@ -1,0 +1,116 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #f6f9fc, #e9f2ff);
+  color: #1f2937;
+
+}
+
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 40px 20px;
+  
+}
+
+.main-title {
+  font-size: 38px;
+  font-weight: 700;
+  margin-bottom: 32px;
+  text-align: center;
+  background: linear-gradient(90deg, #0070f3, #00c6ff);
+
+}
+
+.search-container {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 36px;
+  justify-content: center;
+}
+
+.search-input {
+  flex: 1;
+  max-width: 400px;
+  padding: 12px 14px;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  outline: none;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  transition: 0.2s;
+}
+
+.search-input:focus {
+  box-shadow: 0 0 0 2px #0070f3;
+}
+
+.search-button {
+  padding: 12px 20px;
+  background: linear-gradient(90deg, #0070f3, #00c6ff);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.botonRandom {
+  padding: 12px 20px;
+  background: linear-gradient(90deg, #0070f3, #00c6ff);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 28px;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 18px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+}
+
+.card img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.card h2 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-top: 14px;
+  text-align: center;
+}
+
+.loading,
+.error {
+  padding: 24px;
+  font-size: 18px;
+  text-align: center;
+}
+
+.error {
+  color: #e63946;
+  font-weight: 600;
+}
